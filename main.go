@@ -1,23 +1,24 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"io/ioutil"
-	"resume-builder/models"
 
 	"gopkg.in/yaml.v2"
 )
 
-const resume_file = "./resources/resume.yml"
+func ParseResume(fileName string) Resume {
+	var res Resume
 
-func ParseResume(fileName string) models.Resume {
-	var res models.Resume
-
-	f, e := ioutil.ReadFile(resume_file)
+	// read file
+	f, e := ioutil.ReadFile(fileName)
 
 	if e != nil {
 		panic(e)
 	}
 
+	// parse yaml
 	e = yaml.Unmarshal(f, &res)
 
 	if e != nil {
@@ -27,15 +28,33 @@ func ParseResume(fileName string) models.Resume {
 	return res
 }
 
+// Reading CSS Stylesheet
+func ReadCSSFile(fileName string) string {
+	f, e := ioutil.ReadFile(fileName)
+	css := ""
+	if e != nil {
+		fmt.Println("Error reading CSS file")
+	} else {
+		css = string(f)
+	}
+
+	return css
+}
+
 func main() {
-	resume := ParseResume("./resources/resume.yml")
+	// parse command line flags
+	infile := flag.String("i", "resume.yml", "Input file")
+	css_file := flag.String("s", "resume.css", "CSS file")
+	flag.Parse()
+
+	resume := ParseResume(*infile)
 
 	// string of html with stylesheet link
 	resumeHtmlBlock := resume.ToHTML()
 	html := `<!DOCTYPE html><html><head>
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/dreampulse/computer-modern-web-font@master/fonts.css">
-	<link rel='stylesheet' href='resume.css'></head><body>` + resumeHtmlBlock + `</body></html>`
+	<style>` + ReadCSSFile(*css_file) + `</style></head><body>` + resumeHtmlBlock + `</body></html>`
 
-	// save string to file
-	ioutil.WriteFile("./resources/resume.html", []byte(html), 0644)
+	// save string to html file
+	ioutil.WriteFile(resume.Header.Name+" Resume.html", []byte(html), 0644)
 }

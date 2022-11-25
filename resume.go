@@ -1,4 +1,4 @@
-package models
+package main
 
 type Header struct {
 	Name     string `yaml:"name"`
