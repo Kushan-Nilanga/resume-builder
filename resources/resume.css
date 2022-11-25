@@ -1,0 +1,45 @@
+body {
+  font-family: "Computer Modern Serif", sans-serif;
+}
+
+.header {
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 0;
+  padding-bottom: 0;
+}
+
+hr {
+  margin: 0;
+}
+
+.header li {
+  display: inline-block;
+}
+
+.skills ul {
+  columns: 2;
+}
+
+.heading {
+  columns: 2;
+  list-style-type: none;
+  margin: 0.5em;
+  padding: 0;
+}
+
+.primary {
+  font-weight: bold;
+}
+
+.tertiary {
+  font-style: italic;
+}
+
+.right {
+  text-align: right;
+}

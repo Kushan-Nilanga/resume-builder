@@ -1,33 +1,41 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
-	"log"
+	"resume-builder/models"
 
-	"gopkg.in/yaml.v3"
+	"gopkg.in/yaml.v2"
 )
 
+const resume_file = "./resources/resume.yml"
+
+func ParseResume(fileName string) models.Resume {
+	var res models.Resume
+
+	f, e := ioutil.ReadFile(resume_file)
+
+	if e != nil {
+		panic(e)
+	}
+
+	e = yaml.Unmarshal(f, &res)
+
+	if e != nil {
+		panic(e)
+	}
+
+	return res
+}
+
 func main() {
+	resume := ParseResume("./resources/resume.yml")
 
-	yfile, err := ioutil.ReadFile("resume.yml")
+	// string of html with stylesheet link
+	resumeHtmlBlock := resume.ToHTML()
+	html := `<!DOCTYPE html><html><head>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/dreampulse/computer-modern-web-font@master/fonts.css">
+	<link rel='stylesheet' href='resume.css'></head><body>` + resumeHtmlBlock + `</body></html>`
 
-	if err != nil {
-
-		log.Fatal(err)
-	}
-
-	data := make(map[interface{}]interface{})
-
-	err2 := yaml.Unmarshal(yfile, &data)
-
-	if err2 != nil {
-
-		log.Fatal(err2)
-	}
-
-	for k, v := range data {
-
-		fmt.Printf("%s -> %d\n", k, v)
-	}
+	// save string to file
+	ioutil.WriteFile("./resources/resume.html", []byte(html), 0644)
 }
