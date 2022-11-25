@@ -17,7 +17,9 @@ func (h Header) ToHTML() string {
 	html = html + "<h1>" + h.Name + "</h1>"
 	html = html + "<ul>"
 	html = html + "<li>" + h.Email + "</li>"
-	html = html + "<li>" + h.Phone + "</li>"
+	if h.Phone != "" {
+		html = html + "<li>" + h.Phone + "</li>"
+	}
 	html = html + "<li>" + h.Website + "</li>"
 	html = html + "<li>" + h.Location + "</li>"
 	html = html + "<li>" + h.Profile + "</li>"

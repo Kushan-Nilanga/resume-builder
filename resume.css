@@ -13,14 +13,32 @@ h2 {
   padding-bottom: 0;
 }
 
+ul {
+  margin: 0.5em;
+}
+
 hr {
+  margin: 0;
+}
+
+h1 {
+  padding: 0;
   margin: 0;
 }
 
 .header li {
   display: inline-block;
+  padding: 0.1em;
 }
 
+.header li:before {
+  content: "\00a0\2022\00a0\00a0";
+  color: #999;
+  color: rgba(0, 0, 0, 0.5);
+}
+.header li:first-child:before {
+  content: "";
+}
 .skills ul {
   columns: 2;
 }
